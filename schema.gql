@@ -1,0 +1,31 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+type ExchangeOffice {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Query {
+  exchangeOffice: [ExchangeOffice!]!
+}
+
+type Mutation {
+  createExchangeOffice(createExchangeOfficeInput: CreateExchangeOfficeInput!): ExchangeOffice!
+  updateExchangeOffice(updateExchangeOfficeInput: UpdateExchangeOfficeInput!): ExchangeOffice!
+  removeExchangeOffice(id: Int!): ExchangeOffice!
+}
+
+input CreateExchangeOfficeInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateExchangeOfficeInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
