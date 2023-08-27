@@ -17,11 +17,13 @@ export class ExchangeOfficeResolver extends BaseResolver(
     super(exchangeOfficeService);
   }
 
-  @Mutation(() => ExchangeOffice)
-  createExchangeOffice(
-    @Args('createExchangeOfficeInput')
-    createExchangeOfficeInput: CreateExchangeOfficeDto,
-  ) {
-    return this.exchangeOfficeService.create(createExchangeOfficeInput);
+  @Mutation(() => Boolean)
+  async importExchangeOfficeData(@Args('data') data: string): Promise<boolean> {
+    try {
+      await this.exchangeOfficeService.importExchangeOfficesAndCountries(data);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

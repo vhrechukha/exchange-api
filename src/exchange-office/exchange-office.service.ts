@@ -1,33 +1,96 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-import { CreateExchangeOfficeDto } from './dto/create-exchange-office.dto';
-import { UpdateExchangeOfficeDto } from './dto/update-exchange-office.dto';
+import { BaseService } from '../common/base/base.service';
+import { CountryService } from '../country/country.service';
+import { ExchangeService } from '../exchange/exchange.service';
+import { RateService } from '../rate/rate.service';
+import { ExchangeOffice } from './exchange-office.entity';
 
 @Injectable()
-export class ExchangeOfficeService {
-  constructor(private readonly configService: ConfigService) {}
-
-  create(createExchangeOfficeInput: CreateExchangeOfficeDto) {
-    return 'This action adds a new exchangeOffice';
+export class ExchangeOfficeService extends BaseService<ExchangeOffice> {
+  constructor(
+    @InjectRepository(ExchangeOffice)
+    private readonly exchangeOfficeRepository: Repository<ExchangeOffice>,
+    private readonly configService: ConfigService,
+    private readonly rateService: RateService,
+    private readonly exchangeService: ExchangeService,
+    private readonly countryService: CountryService,
+  ) {
+    super(ExchangeOffice, exchangeOfficeRepository);
   }
 
-  findAll() {
-    return [
-      { exampleField: this.configService.get('app.port') },
-      { exampleField: '2' },
-    ];
+  parseIndentedStructure(input): any {
+    const lines = input.trim().split('\n');
+
+    const stack = [[0, {}]];
+    const root: any = stack[0][1];
+
+    lines.forEach((line) => {
+      const level = line.search(/\S/); // Find the first non-space character
+      const text = line.trim();
+
+      // Pop the stack to find the parent object at the current level
+      while (stack.length > 1 && stack[stack.length - 1][0] >= level) {
+        stack.pop();
+      }
+
+      const parentObject = stack[stack.length - 1][1];
+
+      if (text.includes('=')) {
+        const [key, value] = text.split('=').map((str) => str.trim());
+        parentObject[key] = value;
+      } else {
+        const newObj = {};
+
+        if (
+          ['exchange-offices', 'exchanges', 'rates', 'countries'].includes(text)
+        ) {
+          parentObject[text] = [];
+          stack.push([level, parentObject[text]]);
+        } else {
+          if (Array.isArray(parentObject)) {
+            parentObject.push(newObj);
+            stack.push([level, newObj]);
+          } else {
+            parentObject[text] = newObj;
+            stack.push([level, newObj]);
+          }
+        }
+      }
+    });
+
+    return root;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} exchangeOffice`;
-  }
+  async importExchangeOfficesAndCountries(data: string): Promise<void> {
+    const parsedData: any = this.parseIndentedStructure(data);
 
-  update(id: number, updateExchangeOfficeInput: UpdateExchangeOfficeDto) {
-    return `This action updates a #${id} exchangeOffice`;
-  }
+    for (const country of parsedData.countries) {
+      await this.countryService.create(country);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} exchangeOffice`;
+    for (const exchangeOffice of parsedData['exchange-offices']) {
+      exchangeOffice.country = await this.countryService.findByCode(
+        exchangeOffice.country,
+      );
+      const createdExchangeOffice = await this.create(exchangeOffice);
+
+      if (exchangeOffice?.exchanges?.length) {
+        for (const exchange of exchangeOffice.exchanges) {
+          exchange.exchangeOffice = createdExchangeOffice;
+
+          await this.exchangeService.create(exchange);
+        }
+      }
+      if (exchangeOffice?.rates?.length) {
+        for (const rate of exchangeOffice.rates) {
+          rate.exchangeOffice = createdExchangeOffice;
+          await this.rateService.create(rate);
+        }
+      }
+    }
   }
 }

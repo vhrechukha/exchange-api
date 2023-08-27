@@ -58,7 +58,7 @@ type Mutation {
   create(createInput: CreateRateDto!): Rate!
   update(updateInput: UpdateRateDto!): Rate!
   remove(id: Int!): Boolean!
-  createExchangeOffice(createExchangeOfficeInput: CreateExchangeOfficeDto!): ExchangeOffice!
+  importExchangeOfficeData(data: String!): Boolean!
 }
 
 input CreateRateDto {
@@ -78,12 +78,4 @@ input UpdateRateDto {
   reserve: Float
   exchangeOfficeId: String
   id: String!
-}
-
-input CreateExchangeOfficeDto {
-  name: String!
-  country: String!
-  address: String!
-  contactNumber: String!
-  email: String!
 }

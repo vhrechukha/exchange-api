@@ -1,0 +1,5 @@
+/* eslint-disable max-len */
+const importExchangeDataMock =
+  'exchange-offices\n  exchange-office\n    id = 1\n    name = Exchanger 1\n    country = UKR\n    exchanges\n      exchange\n        from = EUR\n        to = USD\n        ask = 110\n        date = 2023-04-24 22:55:33\n      exchange\n        from = USD\n        to = UAH\n        ask = 400\n        date = 2023-04-24 22:55:33\n    rates\n      rate\n        from = EUR\n        to = USD\n        in = 1.1\n        out = 1\n        reserve = 120000\n        date = 2023-04-24 22:55:33\n      rate\n        from = USD\n        to = UAH\n        in = 1\n        out = 40\n        reserve = 150000\n        date = 2023-04-24 22:55:33\n  exchange-office\n    id = 2\n    name = Exchanger 2\n    country = UKR\n    rates\n      rate\n        from = AUD\n        to = CAD\n        in = 1\n        out = 2\n        reserve = 150000\n        date = 2023-04-24 22:55:33\ncountries\n  country\n    code = UKR\n      name = Ukraine';
+
+export default importExchangeDataMock;

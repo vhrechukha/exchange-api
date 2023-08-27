@@ -3,7 +3,10 @@ import { DeepPartial, Repository } from 'typeorm';
 
 @Injectable()
 export abstract class BaseService<T = any> {
-  protected constructor(readonly _entity: { new (): T }, private readonly _repository: Repository<T>) {}
+  protected constructor(
+    readonly _entity: { new (): T },
+    private readonly _repository: Repository<T>,
+  ) {}
 
   async create(createInput: DeepPartial<T>): Promise<T> {
     const entity = this._repository.create(createInput);
