@@ -6,8 +6,11 @@ import { GraphQLDirective } from 'graphql/type';
 
 import { AppService } from './app.service';
 import { AppConfigModule } from './config/app.config.module';
+import { CountryModule } from './country/country.module';
 import { DbProviderModule } from './database/database.module';
+import { ExchangeModule } from './exchange/exchange.module';
 import { ExchangeOfficeModule } from './exchange-office/exchange-office.module';
+import { RateModule } from './rate/rate.module';
 
 @Module({
   imports: [
@@ -27,6 +30,9 @@ import { ExchangeOfficeModule } from './exchange-office/exchange-office.module';
     AppConfigModule,
     DbProviderModule,
     ExchangeOfficeModule,
+    ExchangeModule,
+    CountryModule,
+    RateModule,
   ],
   providers: [AppService],
 })

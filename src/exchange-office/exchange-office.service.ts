@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { CreateExchangeOfficeInput } from './dto/create-exchange-office.input';
-import { UpdateExchangeOfficeInput } from './dto/update-exchange-office.input';
+import { CreateExchangeOfficeDto } from './dto/create-exchange-office.dto';
+import { UpdateExchangeOfficeDto } from './dto/update-exchange-office.dto';
 
 @Injectable()
 export class ExchangeOfficeService {
   constructor(private readonly configService: ConfigService) {}
 
-  create(createExchangeOfficeInput: CreateExchangeOfficeInput) {
+  create(createExchangeOfficeInput: CreateExchangeOfficeDto) {
     return 'This action adds a new exchangeOffice';
   }
 
@@ -23,7 +23,7 @@ export class ExchangeOfficeService {
     return `This action returns a #${id} exchangeOffice`;
   }
 
-  update(id: number, updateExchangeOfficeInput: UpdateExchangeOfficeInput) {
+  update(id: number, updateExchangeOfficeInput: UpdateExchangeOfficeDto) {
     return `This action updates a #${id} exchangeOffice`;
   }
 

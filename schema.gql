@@ -4,28 +4,86 @@
 
 directive @upper on FIELD_DEFINITION
 
+type Country {
+  id: ID!
+  code: String!
+  name: String!
+}
+
+type Rate {
+  id: ID!
+  from: String!
+  to: String!
+  in: Float!
+  out: Float!
+  reserve: Float!
+  date: DateTime!
+  exchangeOffice: ExchangeOffice!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type ExchangeOffice {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: ID!
+  name: String!
+  country: Country!
+  exchanges: [Exchange!]
+  rates: [Rate!]
+}
+
+type Exchange {
+  id: ID!
+  from: String!
+  to: String!
+  ask: Float!
+  date: DateTime!
+  exchangeOffice: ExchangeOffice!
 }
 
 type Query {
-  exchangeOffice: [ExchangeOffice!]!
+  exchangeoffices: [ExchangeOffice!]!
+  exchangeoffice(id: Int!): ExchangeOffice!
+  exchanges: [Exchange!]!
+  exchange(id: Int!): Exchange!
+  countrys: [Country!]!
+  country(id: Int!): Country!
+  rates: [Rate!]!
+  rate(id: Int!): Rate!
 }
 
 type Mutation {
-  createExchangeOffice(createExchangeOfficeInput: CreateExchangeOfficeInput!): ExchangeOffice!
-  updateExchangeOffice(updateExchangeOfficeInput: UpdateExchangeOfficeInput!): ExchangeOffice!
-  removeExchangeOffice(id: Int!): ExchangeOffice!
+  create(createInput: CreateRateDto!): Rate!
+  update(updateInput: UpdateRateDto!): Rate!
+  remove(id: Int!): Boolean!
+  createExchangeOffice(createExchangeOfficeInput: CreateExchangeOfficeDto!): ExchangeOffice!
 }
 
-input CreateExchangeOfficeInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreateRateDto {
+  from: String!
+  to: String!
+  in: Float!
+  out: Float!
+  reserve: Float!
+  exchangeOfficeId: String!
 }
 
-input UpdateExchangeOfficeInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input UpdateRateDto {
+  from: String
+  to: String
+  in: Float
+  out: Float
+  reserve: Float
+  exchangeOfficeId: String
+  id: String!
+}
+
+input CreateExchangeOfficeDto {
+  name: String!
+  country: String!
+  address: String!
+  contactNumber: String!
+  email: String!
 }

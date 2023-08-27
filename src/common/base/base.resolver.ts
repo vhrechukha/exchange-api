@@ -19,22 +19,31 @@ export function BaseResolver<T extends ClassType>(
     }
 
     @Query(() => EntityClass, { name: `${EntityClass.name.toLowerCase()}` })
-    async findOne(@Args('id', { type: () => Int }) id: number): Promise<BaseEntity> {
+    async findOne(
+      @Args('id', { type: () => Int }) id: number,
+    ): Promise<BaseEntity> {
       return await this._entityService.findOne(id);
     }
 
     @Mutation(() => EntityClass)
-    async create(@Args('createInput') createInput: typeof EntityDTOClass): Promise<BaseEntity> {
+    async create(
+      @Args('createInput', { type: () => EntityDTOClass }) createInput: any, // Use the correct input type
+    ): Promise<BaseEntity> {
       return await this._entityService.create(createInput);
     }
 
     @Mutation(() => EntityClass)
-    async update(@Args('updateInput') updateInput: typeof EntityUpdateDTOClass): Promise<BaseEntity> {
+    async update(
+      @Args('updateInput', { type: () => EntityUpdateDTOClass })
+      updateInput: any,
+    ): Promise<BaseEntity> {
       return await this._entityService.update(updateInput);
     }
 
     @Mutation(() => Boolean)
-    async remove(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
+    async remove(
+      @Args('id', { type: () => Int }) id: number,
+    ): Promise<boolean> {
       return await this._entityService.remove(id);
     }
   }

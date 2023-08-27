@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Country1693137721487 implements MigrationInterface {
