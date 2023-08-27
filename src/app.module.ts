@@ -5,6 +5,7 @@ import { DirectiveLocation } from 'graphql/language';
 import { GraphQLDirective } from 'graphql/type';
 
 import { AppService } from './app.service';
+import { AppConfigModule } from './config/app.config.module';
 import { ExchangeOfficeModule } from './exchange-office/exchange-office.module';
 
 @Module({
@@ -22,6 +23,7 @@ import { ExchangeOfficeModule } from './exchange-office/exchange-office.module';
         ],
       },
     }),
+    AppConfigModule,
     ExchangeOfficeModule,
   ],
   providers: [AppService],

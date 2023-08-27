@@ -1,16 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { CreateExchangeOfficeInput } from './dto/create-exchange-office.input';
 import { UpdateExchangeOfficeInput } from './dto/update-exchange-office.input';
 
 @Injectable()
 export class ExchangeOfficeService {
+  constructor(private readonly configService: ConfigService) {}
+
   create(createExchangeOfficeInput: CreateExchangeOfficeInput) {
     return 'This action adds a new exchangeOffice';
   }
 
   findAll() {
-    return [{ exampleField: '1' }, { exampleField: '2' }];
+    return [
+      { exampleField: this.configService.get('app.port') },
+      { exampleField: '2' },
+    ];
   }
 
   findOne(id: number) {
