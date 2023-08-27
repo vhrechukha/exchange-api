@@ -1,7 +1,8 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { BaseResolver } from '../common/base/base.resolver';
 import { CreateExchangeOfficeDto } from './dto/create-exchange-office.dto';
+import { TopExchangersByCountryDto } from './dto/top-chargers-by-country.dto';
 import { UpdateExchangeOfficeDto } from './dto/update-exchange-office.dto';
 import { ExchangeOffice } from './exchange-office.entity';
 import { ExchangeOfficeService } from './exchange-office.service';
@@ -15,6 +16,11 @@ export class ExchangeOfficeResolver extends BaseResolver(
 ) {
   constructor(private readonly exchangeOfficeService: ExchangeOfficeService) {
     super(exchangeOfficeService);
+  }
+
+  @Query(() => [TopExchangersByCountryDto])
+  async getTopExchangersByCountry(): Promise<TopExchangersByCountryDto[]> {
+    return this.exchangeOfficeService.getTopExchangersByCountry();
   }
 
   @Mutation(() => Boolean)

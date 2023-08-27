@@ -12,6 +12,7 @@ import { Rate } from '../rate/rate.entity';
 import { Country1693137721487 } from './migrations/1693137721487-Country';
 import { RestModels1693139817207 } from './migrations/1693139817207-RestModels';
 
+// TODO: some good solution for now writing duplicates in typeorm v3?
 // https://github.com/typeorm/typeorm/issues/8810
 const DataSourceConfig = new DataSource({
   type: 'postgres',

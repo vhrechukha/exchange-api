@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 import { BaseService } from '../common/base/base.service';
 import { CountryService } from '../country/country.service';
 import { ExchangeService } from '../exchange/exchange.service';
 import { RateService } from '../rate/rate.service';
+import { TopExchangersByCountryDto } from './dto/top-chargers-by-country.dto';
 import { ExchangeOffice } from './exchange-office.entity';
+import topExchangersByCountryQuery from './query/top-3-profit-currencies';
 
 @Injectable()
 export class ExchangeOfficeService extends BaseService<ExchangeOffice> {
@@ -18,8 +20,21 @@ export class ExchangeOfficeService extends BaseService<ExchangeOffice> {
     private readonly rateService: RateService,
     private readonly exchangeService: ExchangeService,
     private readonly countryService: CountryService,
+    @InjectDataSource() private dataSource: DataSource,
   ) {
     super(ExchangeOffice, exchangeOfficeRepository);
+  }
+
+  async getTopExchangersByCountry(): Promise<TopExchangersByCountryDto[]> {
+    // TODO: rewrite to typeorm Query Builder
+    const results = await this.dataSource.query(topExchangersByCountryQuery);
+
+    return results.map((result) => ({
+      countryRank: result.country_rank,
+      countryName: result.country_name,
+      exchangerName: result.exchanger_name,
+      totalProfit: result.total_profit,
+    }));
   }
 
   parseIndentedStructure(input): any {

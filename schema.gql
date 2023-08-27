@@ -43,9 +43,17 @@ type Exchange {
   exchangeOffice: ExchangeOffice!
 }
 
+type TopExchangersByCountryDto {
+  countryRank: Float!
+  countryName: String!
+  exchangerName: String!
+  totalProfit: Float!
+}
+
 type Query {
   exchangeoffices: [ExchangeOffice!]!
   exchangeoffice(id: Int!): ExchangeOffice!
+  getTopExchangersByCountry: [TopExchangersByCountryDto!]!
   exchanges: [Exchange!]!
   exchange(id: Int!): Exchange!
   countrys: [Country!]!

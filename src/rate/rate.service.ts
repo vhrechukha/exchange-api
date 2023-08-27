@@ -9,7 +9,7 @@ import { Rate } from './rate.entity';
 export class RateService extends BaseService<Rate> {
   constructor(
     @InjectRepository(Rate)
-    private readonly rateRepository: Repository<Rate>,
+    readonly rateRepository: Repository<Rate>,
   ) {
     super(Rate, rateRepository);
   }

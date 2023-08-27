@@ -9,10 +9,8 @@ import { Exchange } from './exchange.entity';
 export class ExchangeService extends BaseService<Exchange> {
   constructor(
     @InjectRepository(Exchange)
-    private readonly exchangeRepository: Repository<Exchange>,
+    readonly exchangeRepository: Repository<Exchange>,
   ) {
     super(Exchange, exchangeRepository);
   }
-
-  // You can add additional methods here if needed
 }

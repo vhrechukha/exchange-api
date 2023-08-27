@@ -9,7 +9,7 @@ import { Country } from './country.entity';
 export class CountryService extends BaseService<Country> {
   constructor(
     @InjectRepository(Country)
-    private readonly countryRepository: Repository<Country>,
+    readonly countryRepository: Repository<Country>,
   ) {
     super(Country, countryRepository);
   }
@@ -21,6 +21,4 @@ export class CountryService extends BaseService<Country> {
     }
     return entity;
   }
-
-  // You can add additional methods here if needed
 }
