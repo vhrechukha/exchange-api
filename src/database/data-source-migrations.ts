@@ -5,7 +5,8 @@ dotenv.config();
 
 import { DataSource } from 'typeorm';
 
-import { ExchangeOffice } from '../exchange-office/entities/exchange-office.entity';
+import { Country } from '../country/country.entity';
+import { Country1693137721487 } from './migrations/1693137721487-Country';
 
 // https://github.com/typeorm/typeorm/issues/8810
 const DataSourceConfig = new DataSource({
@@ -16,8 +17,8 @@ const DataSourceConfig = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   schema: process.env.DB_SCHEMA || 'public',
-  entities: [ExchangeOffice],
-  migrations: ['src/database/migrations/*{.ts,.js}'],
+  entities: [Country],
+  migrations: [Country1693137721487],
   migrationsTableName: 'migrations_typeorm',
   synchronize: false,
 });

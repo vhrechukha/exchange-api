@@ -4,7 +4,8 @@ import { DatabaseType, DataSource } from 'typeorm';
 
 import { AppConfigModule } from '../config/app.config.module';
 import { AppConfigService } from '../config/app.config.service';
-import { ExchangeOffice } from '../exchange-office/entities/exchange-office.entity';
+import { Country } from '../country/country.entity';
+import { Country1693137721487 } from './migrations/1693137721487-Country';
 
 @Module({
   imports: [
@@ -19,8 +20,8 @@ import { ExchangeOffice } from '../exchange-office/entities/exchange-office.enti
         password: appConfigService.get('db.password'),
         database: appConfigService.get('db.database'),
         schema: appConfigService.get('db.schema'),
-        entities: [ExchangeOffice],
-        migrations: ['src/database/migrations/*{.ts,.js}'],
+        entities: [Country],
+        migrations: [Country1693137721487],
         migrationsTableName: 'migrations_typeorm',
         migrationsRun: true,
       }),
